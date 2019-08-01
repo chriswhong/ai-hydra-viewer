@@ -1,5 +1,12 @@
+html, body, #root, .App {
+  height: 100%
+}
+
+
 .App {
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .App-logo {
@@ -30,4 +37,59 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/*  D3 Chart  */
+
+.chart {
+  height: 500px;
+  width: 960px;
+}
+
+.tick line {
+  stroke: #eeeeee;
+  stroke-width: 1.5;
+}
+
+.tick text {
+  font-size: 19px;
+  transform: translateY(20px);
+  fill: #908e8e;
+}
+
+.line {
+    fill: none;
+    stroke-width: 3;
+}
+
+.deep_red {
+  stroke: #d83e3f;
+}
+
+.uv {
+  stroke: #c953d9;
+}
+
+.violet {
+  stroke: #8b4edb;
+}
+
+.cool_white {
+  stroke: #54b8c6;
+}
+
+.green {
+  stroke: #66c167;
+}
+
+.blue {
+  stroke: #186cc5;
+}
+
+.royal {
+  stroke: #243ac6;
+}
+
+.tick text {
+  font-size: 19px;
 }
