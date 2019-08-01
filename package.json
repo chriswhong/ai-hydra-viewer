@@ -6,6 +6,7 @@
     "d3": "^5.9.7",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-dropzone": "^10.1.7",
     "react-scripts": "3.0.1",
     "xml-js": "^1.6.11",
     "xml2json": "^0.11.2"

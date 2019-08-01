@@ -5,6 +5,7 @@ html, body, #root, .App {
 
 .App {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
@@ -39,7 +40,26 @@ html, body, #root, .App {
   }
 }
 
+.content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer {
+  align-self: flex-end;
+  align-self: flex-end;
+  padding: 13px 40px;
+}
+
 /*  D3 Chart  */
+
+.chart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 .chart {
   height: 500px;
@@ -92,4 +112,13 @@ html, body, #root, .App {
 
 .tick text {
   font-size: 19px;
+}
+
+/*  Drop Zone  */
+
+.dropzone {
+  font-size: 2rem;
+  padding: 50px;
+  border: 5px #b3b3b3 dashed;
+  border-radius: 18px;
 }
