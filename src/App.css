@@ -114,6 +114,10 @@ html, body, #root, .App {
   font-size: 19px;
 }
 
+.dot {
+  fill: steelblue;
+}
+
 /*  Drop Zone  */
 
 .dropzone {
