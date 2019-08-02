@@ -1,5 +1,5 @@
-import React, { useCallback, useMemo } from 'react';
-import { useDropzone } from 'react-dropzone';
+import React, { useCallback, useMemo } from 'react'
+import { useDropzone } from 'react-dropzone'
 
 const baseStyle = {
   flex: 1,
@@ -15,23 +15,21 @@ const baseStyle = {
   color: '#bdbdbd',
   outline: 'none',
   transition: 'border .24s ease-in-out'
-};
+}
 
 const activeStyle = {
   borderColor: '#2196f3'
-};
+}
 
 const acceptStyle = {
   borderColor: '#00e676'
-};
+}
 
 const rejectStyle = {
   borderColor: '#ff1744'
-};
-
+}
 
 const DropZone = (props) => {
-
   const onDrop = useCallback(acceptedFiles => {
     const reader = new FileReader()
 
@@ -47,7 +45,6 @@ const DropZone = (props) => {
   }, [])
 
   const {
-    acceptedFiles,
     getRootProps,
     getInputProps,
     isDragActive,
@@ -55,8 +52,8 @@ const DropZone = (props) => {
     isDragReject
   } = useDropzone({
     multiple: false,
-    onDrop,
-  });
+    onDrop
+  })
 
   const style = useMemo(() => ({
     ...baseStyle,
@@ -66,16 +63,16 @@ const DropZone = (props) => {
   }), [
     isDragActive,
     isDragReject
-  ]);
+  ])
 
   return (
     <section className="container">
-      <div {...getRootProps({className: 'dropzone', style})}>
+      <div {...getRootProps({ className: 'dropzone', style })}>
         <input {...getInputProps()} />
         <p>Drag and drop an aip file here, or click to select one</p>
       </div>
     </section>
-  );
+  )
 }
 
 export default DropZone
