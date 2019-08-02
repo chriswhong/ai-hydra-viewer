@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/ai-hydra-viewer/static/css/main.2a371a12.chunk.css",
+    "main.js": "/ai-hydra-viewer/static/js/main.0df8ba00.chunk.js",
+    "main.js.map": "/ai-hydra-viewer/static/js/main.0df8ba00.chunk.js.map",
+    "runtime~main.js": "/ai-hydra-viewer/static/js/runtime~main.69cfcd90.js",
+    "runtime~main.js.map": "/ai-hydra-viewer/static/js/runtime~main.69cfcd90.js.map",
+    "static/js/2.12967f77.chunk.js": "/ai-hydra-viewer/static/js/2.12967f77.chunk.js",
+    "static/js/2.12967f77.chunk.js.map": "/ai-hydra-viewer/static/js/2.12967f77.chunk.js.map",
+    "index.html": "/ai-hydra-viewer/index.html",
+    "precache-manifest.87e43b1be5130ad6a95691de70467e17.js": "/ai-hydra-viewer/precache-manifest.87e43b1be5130ad6a95691de70467e17.js",
+    "service-worker.js": "/ai-hydra-viewer/service-worker.js",
+    "static/css/main.2a371a12.chunk.css.map": "/ai-hydra-viewer/static/css/main.2a371a12.chunk.css.map"
+  }
+}
