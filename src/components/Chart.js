@@ -5,6 +5,32 @@ class Chart extends React.Component {
   componentDidMount() {
     const { data } = this.props
 
+    // clean up the data so it looks like
+    // [
+    //   {
+    //     name: 'blue',
+    //     values: [
+    //       {
+    //         time: 0,
+    //         intensity: 0
+    //       },
+    //       ...
+    //     ]
+    //   },
+    //   ...
+    // ]
+    const colorData = Object.keys(data.ramp.colors).map((color) => {
+      return {
+        name: color,
+        values: data.ramp.colors[color].point.map((point) => {
+          return {
+            intensity: parseInt(point.intensity._text),
+            time: parseInt(point.time._text)
+          }
+        })
+      }
+    })
+
     if (data) {
       d3.select('.chart').select('svg').remove()
       // chart based on https://bl.ocks.org/gordlea/27370d1eea8464b04538e6d8ced39e89
@@ -29,8 +55,8 @@ class Chart extends React.Component {
         .range([height, 0]);
 
       const line = d3.line()
-        .x(function(d) { return xScale(parseInt(d.time._text)); })
-        .y(function(d) { return yScale(parseInt(d.intensity._text)); })
+        .x(function(d) { return xScale(parseInt(d.time)); })
+        .y(function(d) { return yScale(parseInt(d.intensity)); })
         .curve(d3.curveMonotoneX)
 
       const svg = d3.select('.chart').append("svg")
@@ -86,17 +112,15 @@ class Chart extends React.Component {
         .call(g => g.select('.domain').remove())
 
       // for each color in the data, render a line
-      const colors = Object.keys(data.ramp.colors);
-      colors.forEach((color) => {
-        const colorData = data.ramp.colors[color].point
+      colorData.forEach((color) => {
         svg.append("path")
-          .datum(colorData)
-          .attr("class", `line ${color}`)
+          .datum(color.values)
+          .attr("class", `line ${color.name}`)
           .attr("d", line);
       })
 
       // render circles for each time specified in the file
-      const points = data.ramp.colors.blue.point.map(d => parseInt(d.time._text))
+      const points = colorData[0].values.map(d => d.time)
       svg.selectAll(".dot")
         .data(points)
         .enter().append("circle")
@@ -104,8 +128,99 @@ class Chart extends React.Component {
         .attr("cx", d => xScale(d))
         .attr("cy", height + 20)
         .attr("r", 5)
+
+      // mouseover effect
+      // https://bl.ocks.org/larsenmtl/e3b8b7c2ca4787f77d78f58d41c3da91
+
+      svg.append("path") // this is the black vertical line to follow mouse
+       .attr("class", "mouse-line")
+       .style("stroke", "black")
+       .style("stroke-width", "1px")
+       .style("opacity", "0");
+
+
+      svg.append("rect") // append a rect to catch mouse movements on canvas
+      .attr('width', width) // can't catch mouse events on a g element
+      .attr('height', height)
+      .attr('fill', 'none')
+      .attr('pointer-events', 'all')
+      .on('mouseout', function() { // on mouse out hide line, circles and text
+        d3.select(".mouse-line")
+          .style("opacity", "0");
+        d3.selectAll(".mouse-per-line circle")
+          .style("opacity", "0");
+        d3.selectAll(".mouse-per-line text")
+          .style("opacity", "0");
+      })
+      .on('mouseover', function() { // on mouse in show line, circles and text
+        d3.select(".mouse-line")
+          .style("opacity", "1");
+        d3.selectAll(".mouse-per-line circle")
+          .style("opacity", "1");
+        d3.selectAll(".mouse-per-line text")
+          .style("opacity", "1");
+      })
+      .on('mousemove', function() { // mouse moving over canvas
+        var mouse = d3.mouse(this);
+        d3.select(".mouse-line")
+          .attr("d", function() {
+            var d = "M" + mouse[0] + "," + height;
+            d += " " + mouse[0] + "," + 0;
+            return d;
+          });
+
+        var lines = document.getElementsByClassName('line');
+
+        d3.selectAll(".mouse-per-line")
+          .attr("transform", function(d, i) {
+            const xDate = xScale.invert(mouse[0])
+
+            const bisect = d3.bisector(function(d) { return d.date; }).right;
+            const idx = bisect(d.values, xDate);
+
+
+            var beginning = 0,
+                end = lines[i].getTotalLength(),
+                target = null;
+
+            let pos
+
+            while (true){
+              target = Math.floor((beginning + end) / 2);
+              pos = lines[i].getPointAtLength(target);
+              if ((target === end || target === beginning) && pos.x !== mouse[0]) {
+                  break;
+              }
+              if (pos.x > mouse[0])      end = target;
+              else if (pos.x < mouse[0]) beginning = target;
+              else break; //position found
+            }
+
+            d3.select(this).select('text')
+              .text(yScale.invert(pos.y).toFixed(2));
+
+            return "translate(" + mouse[0] + "," + pos.y + ")";
+          });
+      })
+
+
+
+      var mousePerLine = svg.selectAll('.mouse-per-line')
+  .data(colorData)
+  .enter()
+  .append("g")
+  .attr("class", "mouse-per-line");
+
+mousePerLine.append("circle")
+  .attr("r", 7)
+  .style("stroke", d => d.name)
+  .style("fill", "none")
+  .style("stroke-width", "1px")
+  .style("opacity", "0");
     }
   }
+
+
 
   render () {
     const { filename } = this.props
